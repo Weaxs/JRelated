@@ -23,6 +23,7 @@ import java.util.List;
 public class Solution {
 
     public List<List<Integer>> threeSum(int[] nums) {
+        //先排序，负数前置
         Arrays.sort(nums);
         List<List<Integer>> res = new ArrayList<List<Integer>>();
         for(int k = 0; k < nums.length - 2; k++){
@@ -46,7 +47,7 @@ public class Solution {
     }
 
     public static void main(String[] args) {
-        int[] num = {-1, 0, 1, 2, -1, -4};
+        int[] num = {1, 0, 1, 2, -1, -4};
         Solution solution = new Solution();
         System.out.println(solution.threeSum(num));
     }
