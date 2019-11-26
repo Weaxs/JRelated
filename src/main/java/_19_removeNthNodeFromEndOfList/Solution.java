@@ -1,6 +1,8 @@
 package _19_removeNthNodeFromEndOfList;
 
 
+import basic.ListNode;
+
 /**
  * 删除链表的倒数第N个节点
  *
@@ -24,7 +26,7 @@ public class Solution {
      */
     public ListNode removeNthFromEnd(ListNode head, int n) {
         ListNode pre = head;
-//        ListNode post = head.next;
+//        basic.ListNode post = head.next;
         ListNode current = head;
         for (int targetPos = 1,currentPos = 1;current != null;currentPos++,current = current.next) {
             if (currentPos - targetPos == n - 1) {
@@ -83,8 +85,3 @@ public class Solution {
 
 }
 
-class ListNode {
-    int val;
-    ListNode next;
-    ListNode(int x) { val = x; }
-}

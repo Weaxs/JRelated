@@ -1,6 +1,8 @@
 package _21_mergeTwoSortedLists;
 
 
+import basic.ListNode;
+
 /**
  * 合并两个有序链表
  *
@@ -76,8 +78,3 @@ public class Solution {
 
 }
 
-class ListNode {
-    int val;
-    ListNode next;
-    ListNode(int x) { val = x;}
- }
