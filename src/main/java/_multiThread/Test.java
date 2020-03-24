@@ -1,8 +1,6 @@
 package _multiThread;
 
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 public class Test {
 
@@ -11,6 +9,7 @@ public class Test {
     private static int c = 0;
     private int d = 0;
     private int e = 0;
+    private Integer f = 0;
 
     public static void main(String[] args) {
         Test test = new Test();
@@ -52,6 +51,23 @@ public class Test {
                 test.addE();
             }
         });
+        //不论此处是new Runnable()还是new Callable，submit方法中的newTaskFor方法都会把它变成Callable
+        Future<?> future = poolExecutor.submit(new Callable<Integer>() {
+
+            @Override
+            public Integer call() throws Exception {
+                return test.addF();
+            }
+        }
+//        new Runnable() {
+//            @Override
+//            public void run() {
+//                test.addF();
+//            }
+//        }
+        );
+        System.out.println(future);
+
 
     }
 
@@ -95,6 +111,14 @@ public class Test {
             e++;
         }
         System.out.println("e = " +e);
+    }
+
+    private Integer addF() {
+        synchronized (f) {
+            f++;
+        }
+        System.out.println("f = " +f);
+        return f;
     }
 
 }
