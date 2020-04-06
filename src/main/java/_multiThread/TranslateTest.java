@@ -2,6 +2,7 @@ package _multiThread;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.*;
 
 public class TranslateTest {
@@ -114,6 +115,29 @@ public class TranslateTest {
             e.printStackTrace();
         }
         return "333333";
+    }
+
+    public String baidu(String content) {
+        randomSleep();
+        return "result";
+    }
+
+    public String google(String content) {
+        randomSleep();
+        return "result";
+    }
+
+    public String youdao(String content) {
+        randomSleep();
+        return "result";
+    }
+
+    private void randomSleep() {
+        try {
+            Thread.sleep(new Random().nextInt(3000));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }
