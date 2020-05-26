@@ -41,6 +41,10 @@ public class Solution {
         return stack.poll();
     }
 
+    //1 1 1 -> 1 2 1
+    //1 2 1 1 -> 1 2 3 1 -> 1 3 3 1
+    //1 3 3 1 1 —> 1 3 3 4 1 -> 1 3 6 4 1 -> 1 4 6 4 1
+    //以此类推
     public List<Integer> getRow2(int rowIndex) {
         List<Integer> res = new ArrayList<>();
         for(int i = 0; i <= rowIndex; i++){
