@@ -1,4 +1,4 @@
-package _multiThread;
+package javainterview.test._multiThread;
 
 /**
  * volatile只保证可见性

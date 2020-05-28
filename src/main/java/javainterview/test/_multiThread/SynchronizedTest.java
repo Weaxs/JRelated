@@ -1,8 +1,8 @@
-package _multiThread;
+package javainterview.test._multiThread;
 
 import java.util.concurrent.*;
 
-public class Test {
+public class SynchronizedTest {
 
     private int a = 0;
     private int b = 0;
@@ -12,7 +12,7 @@ public class Test {
     private Integer f = 0;
 
     public static void main(String[] args) {
-        Test test = new Test();
+        SynchronizedTest test = new SynchronizedTest();
         ThreadPoolExecutor poolExecutor = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors() * 2, 50, 120L, TimeUnit.SECONDS, new ArrayBlockingQueue(10000));
         poolExecutor.execute(new Runnable() {
             @Override
@@ -34,7 +34,7 @@ public class Test {
             public void run() {
                 //实例方法的锁和静态方法的锁不一样
                 //实例方法对实例加锁，静态方法对类加锁
-                Test.addC();
+                SynchronizedTest.addC();
             }
         });
         poolExecutor.execute(new Runnable() {
@@ -107,7 +107,7 @@ public class Test {
     }
 
     private void addE() {
-        synchronized (Test.class) {
+        synchronized (SynchronizedTest.class) {
             e++;
         }
         System.out.println("e = " +e);

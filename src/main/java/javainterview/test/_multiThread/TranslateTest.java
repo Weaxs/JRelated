@@ -1,4 +1,4 @@
-package _multiThread;
+package javainterview.test._multiThread;
 
 import java.util.ArrayList;
 import java.util.List;
