@@ -30,6 +30,9 @@ package javainterview.test.heap;
  *                  如果为false，则进行Full GC
  * 老年代最大可用的连续空间大于新生代所有对象的总空间   或   老年代最大可用连续空间大于历次晋升到老年代的对象的平均大小      Minor GC
  *
+ * Java8之后永久代变成了元空间
+ *      其中intern字符串的缓存和静态变量以前在永久代，更新后并不是分配到元空间
+ *      而是进行了堆上分配
  */
 public class HeapParam {
 }

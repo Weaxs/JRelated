@@ -15,7 +15,11 @@ package javainterview.test.heap;
  * ② 同步省略 （锁消除）
  *      判断同步快锁使用的锁对象是否只能够被一个线程访问而没有被发布到其他线程
  *      则JIT编译器在编译同步块时会取消对这部分代码的同步
- *
+ * ③ 标量替换
+ *      标量：无法再分解成更小的数据的数据，例如基本数据类型
+ *      聚合量：还可以分解的数据
+ *      如果没有逃逸，将对象打散分配在栈上
+ *      -XX:+EliminateAllocations   开启标量替换，默认开启
  *
  */
 public class EscapeAnalysis {
@@ -69,7 +73,7 @@ class StackAllocation {
 }
 
 
-//同步省略说明
+//同步省略说明 (可以代码规避)
 class SynchronizedTest {
 
     public void f() {
@@ -80,6 +84,23 @@ class SynchronizedTest {
 //        类似于
 //        Object hollis = new Object();
 //        System.out.println(hollis);
+    }
+
+}
+
+//标量替换说明 (和栈上分配 配合使用)
+class ScalareReplace {
+    public static class User {
+        public int id;
+        public String name;
+    }
+
+    //user没有发生逃逸
+    public static void alloc() {
+        User user = new User();
+        //将User对象打散成int和String  分配到栈上
+        user.id = 5;
+        user.name = "balabala";
     }
 
 }
