@@ -35,6 +35,16 @@ public class Solution {
         return true;
     }
 
+    public boolean isPalindrome2(String s) {
+        String str = s.toLowerCase();
+        StringBuilder sb = new StringBuilder();
+        //去除非字母和数字
+        for(char c : str.toCharArray()){
+            if(Character.isLetterOrDigit(c))    sb.append(c);
+        }
+        return sb.toString().equals(sb.reverse().toString());
+    }
+
     public static void main(String[] args) {
         Solution solution = new Solution();
 //        System.out.println(solution.isPalindrome("A man,bbb .,<><?a plan, a canal: Pabbb ()@#$%nama"));
