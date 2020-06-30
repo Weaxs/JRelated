@@ -1,3 +1,3 @@
 # JRelated
 
-java相关算法题/虚拟机/多线程等 示例
+java相关虚拟机/多线程/Spring等 示例
