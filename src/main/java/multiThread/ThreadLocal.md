@@ -59,6 +59,9 @@
             value是一个Object类
     Entry类继承了WeakRefrence弱引用类，但只有key弱引用
     
+    比如我们在同一个线程中声明了两个 ThreadLocal 对象的话，会使用 Thread内部都是使用仅有那个ThreadLocalMap 存放数据的
+    ThreadLocalMap的 key 就是 ThreadLocal对象，value 就是 ThreadLocal 对象调用set方法设置的值。
+    
 > ThreadLocal 内存泄露问题
 
     上面提到ThreadLocalMap中使用的key为ThreadLocal的弱引用,而value是强引用。

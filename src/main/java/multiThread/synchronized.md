@@ -1,4 +1,4 @@
-> # Synchronized关键字
+> # Synchronized关键字 (原子性)
 
 > Synchronized三种使用方式
 
