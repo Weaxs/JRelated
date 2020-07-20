@@ -19,6 +19,10 @@ public class ThreadRunnnableTest {
         //name：线程的名字，多个线程的名字是可以重复的。如果不指定名字
         //inheritThreadLocals：继承ThreadLocals
 
+        new Thread(() -> {
+            System.out.println("Java 8 匿名内部类");
+        }, "线程名称").start();
+
 
 
     }
