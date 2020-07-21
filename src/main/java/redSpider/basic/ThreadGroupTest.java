@@ -2,7 +2,7 @@ package redSpider.basic;
 
 import java.util.stream.IntStream;
 
-public class ThreadGroup {
+public class ThreadGroupTest {
 
     /**
      * 每个Thread必然存在于一个ThreadGroup中，Thread不能独立于ThreadGroup存在。
@@ -10,8 +10,8 @@ public class ThreadGroup {
      * ThreadGroup管理着它下面的Thread，ThreadGroup是一个标准的向下引用的树状结构，这样设计的原因是防止"上级"线程被"下级"线程引用而无法有效地被GC回收。
      */
     public static void main(String[] args) {
-        ThreadGroup threadGroup = new ThreadGroup();
-        threadGroup.threadGroupTest();
+        ThreadGroupTest threadGroup = new ThreadGroupTest();
+        threadGroup.threadPriorityWhetherUse();
 
     }
 
@@ -26,8 +26,7 @@ public class ThreadGroup {
     }
 
     /**
-     * Java程序中对线程所设置的优先级只是给操作系统一个建议，操作系统不一定会采纳。
-     * 而真正的调用顺序，是由操作系统的线程调度算法决定的。
+     * 设置优先级 及 默认优先级
      */
     private void threadPriority() {
         Thread a = new Thread();
@@ -38,12 +37,41 @@ public class ThreadGroup {
         System.out.println("b设置过的线程优先级：" + b.getPriority());
     }
 
+    /**
+     * Java程序中对线程所设置的优先级只是给操作系统一个建议，操作系统不一定会采纳。
+     * 而真正的调用顺序，是由操作系统的线程调度算法决定的。
+     *
+     * 线程的调度策略采用抢占式，优先级高的线程比优先级低的线程会有更大的几率优先执行。
+     * 在优先级相同的情况下，按照“先到先得”的原则。
+     * 每个Java程序都有一个默认的主线程，就是通过JVM启动的第一个线程main线程。
+     */
     private void threadPriorityWhetherUse() {
-        IntStream.range(1, 10).forEach(i -> {
+        IntStream.range(1, 11).forEach(i -> {
             Thread thread = new Thread(new T1());
             thread.setPriority(i);
             thread.start();
         });
+    }
+
+    private void threadAndGroupPriority() {
+        ThreadGroup threadGroup = new ThreadGroup("t1") {
+            // 在线程成员抛出unchecked exception
+            // 会执行此方法
+            @Override
+            public void uncaughtException(Thread t, Throwable e) {
+                super.uncaughtException(t, e);
+            }
+        };
+        threadGroup.setMaxPriority(6);
+        Thread thread = new Thread(threadGroup, new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        }, "thread");
+        thread.setPriority(9);
+        System.out.println("我是线程组的优先级"+threadGroup.getMaxPriority());
+        System.out.println("我是线程的优先级"+thread.getPriority());
     }
 
 }
