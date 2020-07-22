@@ -25,12 +25,20 @@ package redSpider.basic;
  *          LockSupport.parkUntil(long deadline)：同上，也是禁止线程进行调度指定时间；
  *     TERMINATED;
  * }
+ *
+ * 线程中断：
+ *      Thread.interrupt()：中断线程。这里的中断线程并不会立即停止线程，而是设置线程的中断状态为true（默认是flase）；
+ *      Thread.interrupted()：测试当前线程是否被中断。调一次设为 true,两次变 false
+ *      Thread.isInterrupted()：测试当前线程是否被中断。不影响中断状态
+ *
  */
 public class ThreadStatus {
 
     public static void main(String[] args) {
         ThreadStatus threadStatus = new ThreadStatus();
-        threadStatus.bloacked2Runnable();
+//        threadStatus.bloacked2Runnable();`
+//        threadStatus.waiting2Runnable();
+        threadStatus.timedWaiting2Runnable();
     }
 
     /**
@@ -47,8 +55,37 @@ public class ThreadStatus {
 //            e.printStackTrace();
 //        }
         b.start();
-        System.out.println(a.getName() + ":" + a.getState()); // 输出 RUNNABLE
-        System.out.println(b.getName() + ":" + b.getState()); // 输出 BLOCKED
+        System.out.println(a.getName() + ":" + a.getState());
+        System.out.println(b.getName() + ":" + b.getState());
+    }
+
+    private void waiting2Runnable() {
+        Thread a = new Thread(this::testMethod, "a");
+        Thread b = new Thread(this::testMethod, "b");
+        a.start();
+        try {
+            // Object.wait会释放锁
+            a.join(); // 不会释放锁，等待当前线程完成
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        b.start();
+        System.out.println(a.getName() + ":" + a.getState());// 输出 TERMINATED
+        System.out.println(b.getName() + ":" + b.getState());
+    }
+
+    private void timedWaiting2Runnable() {
+        Thread a = new Thread(this::testMethod, "a");
+        Thread b = new Thread(this::testMethod, "b");
+        a.start();
+        try {
+            a.join(1000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        b.start();
+        System.out.println(a.getName() + ":" + a.getState());// 输出 TIEMD_WAITING
+        System.out.println(b.getName() + ":" + b.getState());
     }
 
     // 同步方法抢夺锁 (锁实例对象)
