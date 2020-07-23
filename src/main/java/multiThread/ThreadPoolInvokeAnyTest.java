@@ -4,12 +4,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.*;
+import java.util.stream.IntStream;
 
 public class ThreadPoolInvokeAnyTest {
+    ThreadPoolExecutor poolExecutor = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors() * 2, 50, 120L, TimeUnit.SECONDS, new ArrayBlockingQueue(10000));
+
 
     public static void main(String[] args) {
         ThreadPoolInvokeAnyTest threadPoolInvokeAnyTest = new ThreadPoolInvokeAnyTest();
-        System.out.println(threadPoolInvokeAnyTest.getFastTread2());
+        long start = System.currentTimeMillis();
+        threadPoolInvokeAnyTest.invokeAll(10000);
+        long end = System.currentTimeMillis();
+        System.out.println("for循环起submit" + (start - end));
+        start = System.currentTimeMillis();
+        threadPoolInvokeAnyTest.invokeAll2(10000);
+        end = System.currentTimeMillis();
+        System.out.println("线程池invokeAll" + (start - end));
+        start = System.currentTimeMillis();
+        threadPoolInvokeAnyTest.loopStreamAll(10000);
+        end = System.currentTimeMillis();
+        System.out.println("单纯流循环" + (start - end));
+        end = System.currentTimeMillis();
+        threadPoolInvokeAnyTest.loopAll(10000);
+        end = System.currentTimeMillis();
+        System.out.println("单纯循环" + (start - end));
+//        System.out.println(threadPoolInvokeAnyTest.getFastTread2());
     }
 
 
@@ -126,6 +145,58 @@ public class ThreadPoolInvokeAnyTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+
+    public List<String> invokeAll(Integer end) {
+        List<String> ans = new ArrayList<>();
+        List<Future<String>> futures = new ArrayList<>();
+        IntStream.rangeClosed(1, end).forEach(i -> {
+            Future<String> future = poolExecutor.submit(() -> {
+                return i + " ";
+            });
+            futures.add(future);
+        });
+        for (Future<String> future:futures) {
+            try {
+                ans.add(future.get());
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+        return ans;
+    }
+
+    public List<String> invokeAll2(Integer end) {
+        List<String> ans = new ArrayList<>();
+        List<Callable<String>> callables = new ArrayList<>();
+        IntStream.rangeClosed(1, end).forEach(i -> {
+           callables.add(() -> i + " ");
+        });
+        try {
+            for (Future<String> future:poolExecutor.invokeAll(callables)) {
+                ans.add(future.get());
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return ans;
+    }
+
+    public List<String> loopStreamAll(Integer end) {
+        List<String> ans = new ArrayList<>();
+        IntStream.rangeClosed(1, end).forEach(i -> {
+            ans.add(i + " ");
+        });
+        return ans;
+    }
+
+    public List<String> loopAll(Integer end) {
+        List<String> ans = new ArrayList<>();
+        for (int i = 1; i <= end;i++){
+            ans.add(i + " ");
+        }
+        return ans;
     }
 
 }
