@@ -3,7 +3,7 @@ package redSpider.basic;
 import java.io.IOException;
 import java.io.PipedReader;
 import java.io.PipedWriter;
-import java.util.stream.IntStream;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * 顺序执行
@@ -198,4 +198,54 @@ class Pipe {
         new Thread(new WriterThread(writer)).start();
 
     }
+}
+
+// 5. CountDownLatch
+// 实现线程A，B依次输出
+class CountDownLatchTest {
+    static volatile CountDownLatch a = new CountDownLatch(0);
+    static volatile CountDownLatch b = new CountDownLatch(1);
+    static int[] arrayA = {1,3,5,7,9};
+    static int[] arrayB = {2,4,6,8,10};
+    static int indexA = 0;
+    static int indexB = 0;
+
+    static class ThreadA implements Runnable {
+        @Override
+        public void run() {
+            try {
+                while (true) {
+                    a.await(); // 阻塞线程A，直到CountDownLatch a的 state 为 0
+                    System.out.println(arrayA[indexA++]);
+                    b.countDown(); // countDown b 使线程B获取到锁继续执行
+                    a = new CountDownLatch(1); //重设A的CountDownLatch 使其继续阻塞
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    static class ThreadB implements Runnable {
+        @Override
+        public void run() {
+            try {
+                while (true) {
+                    b.await(); // 阻塞线程B，直到CountDownLatch b的 state 为 0
+                    System.out.println(arrayB[indexB++]);
+                    a.countDown(); // countDown a 使线程A获取到锁继续执行
+                    b = new CountDownLatch(1); //重设B的CountDownLatch 使其继续阻塞
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    public static void main(String[] args) {
+        new Thread(new ThreadA()).start();
+        new Thread(new ThreadB()).start();
+    }
+
 }
