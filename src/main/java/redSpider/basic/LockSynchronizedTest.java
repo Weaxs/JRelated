@@ -203,8 +203,8 @@ class Pipe {
 // 5. CountDownLatch
 // 实现线程A，B依次输出
 class CountDownLatchTest {
-    static volatile CountDownLatch a = new CountDownLatch(0);
-    static volatile CountDownLatch b = new CountDownLatch(1);
+    static CountDownLatch a = new CountDownLatch(0);
+    static CountDownLatch b = new CountDownLatch(1);
     static int[] arrayA = {1,3,5,7,9};
     static int[] arrayB = {2,4,6,8,10};
     static int indexA = 0;
@@ -214,7 +214,7 @@ class CountDownLatchTest {
         @Override
         public void run() {
             try {
-                while (true) {
+                while (indexA < arrayA.length) {
                     a.await(); // 阻塞线程A，直到CountDownLatch a的 state 为 0
                     System.out.println(arrayA[indexA++]);
                     b.countDown(); // countDown b 使线程B获取到锁继续执行
@@ -230,7 +230,7 @@ class CountDownLatchTest {
         @Override
         public void run() {
             try {
-                while (true) {
+                while (indexB < arrayB.length) {
                     b.await(); // 阻塞线程B，直到CountDownLatch b的 state 为 0
                     System.out.println(arrayB[indexB++]);
                     a.countDown(); // countDown a 使线程A获取到锁继续执行
