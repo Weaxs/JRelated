@@ -1,5 +1,7 @@
 package virtualMachine.class_loader;
 
+
+
 /**
  * JVM支持两种类型的类加载器
  * 1.引导类加载器(Bootstrap ClassLoader)    -----   C语言编写
@@ -30,6 +32,10 @@ public class ClassLoaderTest {
 
         //classLoader为null  即bootStrapClassLoader
         ClassLoader stringClassLoader = String.class.getClassLoader();
+
+
+        ClassLoader myStringClassLoader = java.lang.String.class.getClassLoader(); //java.lang.SecurityException: Prohibited package name: java.base
+        System.out.println(myStringClassLoader);
 
 
 
