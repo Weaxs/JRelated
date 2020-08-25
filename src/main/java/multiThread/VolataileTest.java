@@ -42,6 +42,10 @@ public class VolataileTest {
         //getstatic指令把race值取到操作栈顶，volatile关键字保证了race值在此时是正确的
         //但在执行iconst_l、iadd这些指令的时候，其他线程可能已经把race的值加大了，而在操作栈顶的值就变成了过期的数据
         //之后putstatic指令执行后会把较小的race值同步回主存中
+
+        //线程A在进行race++的时候，先从主存去到值，然后对其进行++操作
+        //此时线程B将自己加好的race值存到主存
+        //随后线程A将加好的旧值存到主存，导致变成了过期数据
         System.out.println(race);
 
 
