@@ -33,5 +33,5 @@
     > org.springframework.web.servlet.mvc.method.annotation.AbstractMessageConverterMethodProcessor
 
 12. 之后就没往下跟了，反正大概就是 ExceptionHandler 处理后将返回放到 HttpEntity 中，继续往下传递时，
-    只需要 HttpEntity 中的 data 也就是你在 ExceptionHandler 中往 HttpEntity 放的数据，
-    之后会把这个 data 放入HttpResponse 的 body 里面，然后进行渲染返回。
+    只需要 HttpEntity 中的 body 也就是你在 ExceptionHandler 中往 HttpEntity 放的数据，
+    之后会把这个 body 放入HttpResponse 的 body 里面，然后进行渲染返回。
