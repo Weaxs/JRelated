@@ -57,7 +57,7 @@ public class AsyncScheduledTest {
     @Scheduled(fixedDelay = 1000)
     public void asyncFixedDelayTest() {
         try {
-            LOGGER.info( "Async Fixed Delay Thread" + new Date());
+            LOGGER.info("Async Fixed Delay Thread {}", new Date());
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -73,14 +73,24 @@ public class AsyncScheduledTest {
     @Scheduled(cron = "0/1 * * * * ?")
     public void asyncCornTest() {
         try {
-            LOGGER.info("Async Corn Thread" + new Date().toString());
+            LOGGER.info("Async Corn Thread {}", new Date().toString());
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-
-
+    @Async
+    @Scheduled(fixedDelay = 1000)
+    public void asyncFixedDelaySizeTest() {
+        try {
+            LOGGER.info("Async Fixed Delay Thread {}", new Date());
+            LOGGER.info( "Async Fixed Delay Thread Size {}", Thread.activeCount());
+            LOGGER.info("Async Fixed Delay Thread End {}", Thread.currentThread());
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

@@ -42,7 +42,7 @@ public class ScheduledTest {
     @Scheduled(fixedDelay = 1000)
     public void fixedDelayTest() {
         try {
-            LOGGER.info( "Fixed Delay Thread" + new Date());
+            LOGGER.info( "Fixed Delay Thread {}", new Date());
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -57,7 +57,7 @@ public class ScheduledTest {
     @Scheduled(cron = "0/1 * * * * ?")
     public void cornTest() {
         try {
-            LOGGER.info("Corn Thread" + new Date().toString());
+            LOGGER.info("Corn Thread {}", new Date().toString());
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
